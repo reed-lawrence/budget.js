@@ -1,21 +1,35 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { BudgetDate } from '../classes/budget-date';
 import { BudgetEvent } from '../classes/budget-event';
+import * as $ from 'jquery';
+import 'bootstrap';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-budget',
   templateUrl: './budget.component.html',
-  styleUrls: ['./budget.component.css']
+  styleUrls: ['./budget.component.css'],
+  animations: [
+    trigger('slideDown', [
+      state('void', style({ height: '0px', overflowY: 'hidden' })),
+      transition(':enter, :leave', [
+        animate('150ms ease')
+      ])
+    ])
+  ]
 })
 export class BudgetComponent implements OnInit {
 
   constructor() { }
 
-  @ViewChild('calendar') calendarEle: ElementRef;
-
   month = 2;
   year = 2019;
   monthDates: BudgetDate[] = [];
+
+  // Modal elements
+  @ViewChild('dateModal') dateModalEle: ElementRef;
+  dateDetails: BudgetDate = null;
+  newEventInProgress = false;
 
 
 
@@ -94,8 +108,17 @@ export class BudgetComponent implements OnInit {
     return arr;
   }
 
+  viewDateDetails(date: BudgetDate) {
+    this.dateDetails = JSON.parse(JSON.stringify(date));
+    $(this.dateModalEle.nativeElement).modal('show');
+  }
+
   ngOnInit() {
     this.monthDates = this.generateCalendarDates(this.month, this.year);
+
+    $(this.dateModalEle.nativeElement).on('hidden.bs.modal', (e) => {
+      this.newEventInProgress = false;
+    });
     // this.renderCalendar(this.calendarEle.nativeElement, this.month, this.year, this.monthDates);
   }
 

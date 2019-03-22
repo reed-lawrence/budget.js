@@ -1,6 +1,39 @@
+<div class="modal fade" id="dateModal" tabindex="-1" role="dialog" aria-labelledby="dateModalLabel" aria-hidden="true"
+  #dateModal>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header" *ngIf="dateDetails !== null">
+        <h5 class="modal-title" id="dateModalLabel">{{dateDetails.day}}
+          {{(dateDetails.month + 1) + '/' + dateDetails.date + '/' + dateDetails.year | date}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ul class="list-group">
+          <li class="list-group-item">Cras justo odio</li>
+          <li class="list-group-item">Dapibus ac facilisis in</li>
+          <li class="list-group-item">Morbi leo risus</li>
+          <li class="list-group-item">Porta ac consectetur ac</li>
+          <li class="list-group-item">Vestibulum at eros</li>
+          <li class="list-group-item">
+            <div @slideDown *ngIf="newEventInProgress === false">
+              <button class="btn btn-primary" (click)="newEventInProgress = true">Add new event</button>
+            </div>
+            <div @slideDown *ngIf="newEventInProgress === true">Test</div>
+          </li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="row">
   <div class="col-lg-3">
-
   </div>
   <div class="col">
     <table class="table mt-5">
@@ -15,7 +48,7 @@
       </tr>
       <tr class="calendar-row">
         <td class="calendar-col" *ngFor="let date of weekFilter(monthDates, 7)"
-          [class.calendar-date-valid]="date.date !== null">
+          [class.calendar-date-valid]="date.date !== null" (click)="viewDateDetails(date)">
           <div class="calendar-date">
             {{date.date}}
           </div>
