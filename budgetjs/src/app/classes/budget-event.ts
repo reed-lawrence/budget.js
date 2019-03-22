@@ -6,4 +6,6 @@ export class BudgetEvent {
   dates: BudgetDate[];
   name: string;
   description: string;
+  type: 'deposit' | 'payment';
+  amount: number;
 }

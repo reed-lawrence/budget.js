@@ -20,7 +20,55 @@
             <div @slideDown *ngIf="newEventInProgress === false">
               <button class="btn btn-primary" (click)="newEventInProgress = true">Add new event</button>
             </div>
-            <div @slideDown *ngIf="newEventInProgress === true">Test</div>
+            <div @slideDown *ngIf="newEventInProgress === true">
+              <h6>New Event</h6>
+              <label>Event Name</label>
+              <input type="text" class="form-control mb-3" [(ngModel)]="newEvent.name">
+              <div class="row mb-3">
+                <div class="col">
+                  <label class="mr-2">Recurring</label>
+                  <input type="checkbox" #newEventRecurringCheckbox>
+                </div>
+                <div class="col">
+                  <div @slideDown *ngIf="newEventRecurringCheckbox.checked === true">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="recurringDateDropdownButton"
+                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Dropdown button
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="recurringDateDropdownButton">
+                      <a class="dropdown-item" href="#">Action</a>
+                      <a class="dropdown-item" href="#">Another action</a>
+                      <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="btn-group mb-3" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-outline-danger" [class.active]="newEvent.type === 'payment'"
+                  (click)="newEvent.type = 'payment'">Payment</button>
+                <button type="button" class="btn btn-outline-success" [class.active]="newEvent.type === 'deposit'"
+                  (click)="newEvent.type = 'deposit'">Deposit</button>
+              </div>
+              <div class="row mb-3">
+                <div class="col">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="far fa-minus" *ngIf="newEvent.type === 'payment'"></i>
+                        <i class="far fa-plus" *ngIf="newEvent.type === 'deposit'"></i>
+                      </span>
+                    </div>
+                    <input type="number" class="form-control" [(ngModel)]="newEvent.amount">
+                  </div>
+                </div>
+                <div class="col-2 d-flex">
+                  <span class="m-auto">{{newEvent.amount | currency}}</span>
+                </div>
+              </div>
+
+
+
+            </div>
           </li>
         </ul>
       </div>

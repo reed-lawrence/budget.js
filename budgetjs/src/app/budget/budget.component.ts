@@ -30,6 +30,7 @@ export class BudgetComponent implements OnInit {
   @ViewChild('dateModal') dateModalEle: ElementRef;
   dateDetails: BudgetDate = null;
   newEventInProgress = false;
+  newEvent: BudgetEvent = null;
 
 
 
@@ -110,6 +111,15 @@ export class BudgetComponent implements OnInit {
 
   viewDateDetails(date: BudgetDate) {
     this.dateDetails = JSON.parse(JSON.stringify(date));
+    this.newEvent = {
+      dates: [],
+      description: null,
+      id: null,
+      name: null,
+      recurring: false,
+      type: null,
+      amount: null
+    };
     $(this.dateModalEle.nativeElement).modal('show');
   }
 
@@ -119,7 +129,6 @@ export class BudgetComponent implements OnInit {
     $(this.dateModalEle.nativeElement).on('hidden.bs.modal', (e) => {
       this.newEventInProgress = false;
     });
-    // this.renderCalendar(this.calendarEle.nativeElement, this.month, this.year, this.monthDates);
   }
 
 }
