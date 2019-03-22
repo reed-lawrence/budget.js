@@ -1,3 +1,67 @@
-<p>
-  budget works!
-</p>
+<div class="row">
+  <div class="col-lg-3">
+
+  </div>
+  <div class="col">
+    <table class="table mt-5">
+      <tr>
+        <th>Sunday</th>
+        <th>Monday</th>
+        <th>Tuesday</th>
+        <th>Wednesday</th>
+        <th>Thursday</th>
+        <th>Friday</th>
+        <th>Saturday</th>
+      </tr>
+      <tr class="calendar-row">
+        <td class="calendar-col" *ngFor="let date of weekFilter(monthDates, 7)"
+          [class.calendar-date-valid]="date.date !== null">
+          <div class="calendar-date">
+            {{date.date}}
+          </div>
+        </td>
+      </tr>
+      <tr class="calendar-row">
+        <td class="calendar-col" *ngFor="let date of weekFilter(monthDates, 14, 7)"
+          [class.calendar-date-valid]="date.date !== null">
+          <div class="calendar-date">
+            {{date.date}}
+          </div>
+        </td>
+      </tr>
+      <tr class="calendar-row">
+        <td class="calendar-col" *ngFor="let date of weekFilter(monthDates, 21, 14)"
+          [class.calendar-date-valid]="date.date !== null">
+          <div class="calendar-date">
+            {{date.date}}
+          </div>
+        </td>
+      </tr>
+      <tr class="calendar-row">
+        <td class="calendar-col" *ngFor="let date of weekFilter(monthDates, 28, 21)"
+          [class.calendar-date-valid]="date.date !== null">
+          <div class="calendar-date">
+            {{date.date}}
+          </div>
+        </td>
+      </tr>
+      <tr class="calendar-row">
+        <td class="calendar-col" *ngFor="let date of weekFilter(monthDates, 35, 28)"
+          [class.calendar-date-valid]="date.date !== null">
+          <div class="calendar-date">
+            {{date.date}}
+          </div>
+        </td>
+      </tr>
+      <tr class="calendar-row">
+        <td class="calendar-col" *ngFor="let date of weekFilter(monthDates, 42, 35)"
+          [class.calendar-date-valid]="date.date !== null">
+          <div class="calendar-date">
+            {{date.date}}
+          </div>
+        </td>
+      </tr>
+
+    </table>
+  </div>
+</div>

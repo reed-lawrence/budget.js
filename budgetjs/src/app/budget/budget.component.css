@@ -1,0 +1,16 @@
+.table {
+  table-layout: fixed;
+}
+
+.calendar-row {
+  height: 15rem;
+}
+
+.calendar-col {
+  transition: 250ms ease;
+}
+
+.calendar-date-valid:hover {
+  cursor: pointer;
+  background-color: gray;
+}
