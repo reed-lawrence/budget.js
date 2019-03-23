@@ -25,6 +25,7 @@ export class BudgetComponent implements OnInit {
   month = 2;
   year = 2019;
   monthDates: BudgetDate[] = [];
+  events: BudgetEvent[] = [];
 
   // Modal elements
   @ViewChild('dateModal') dateModalEle: ElementRef;
@@ -32,7 +33,34 @@ export class BudgetComponent implements OnInit {
   newEventInProgress = false;
   newEvent: BudgetEvent = null;
 
+  editEventInProgress = false;
+  editEvent: BudgetEvent = null;
 
+
+
+  unsetEditEvent() {
+    this.editEvent = {
+      amount: null,
+      dates: [],
+      description: null,
+      id: -1,
+      name: null,
+      recurring: false,
+      type: null
+    };
+  }
+
+  setEditEvent(event: BudgetEvent) {
+    this.editEvent = JSON.parse(JSON.stringify(event));
+  }
+
+  saveEditEvent(payload: { event: BudgetEvent, date: BudgetDate }) {
+    this.events[this.events.findIndex(e => e.id === payload.event.id)] = JSON.parse(JSON.stringify(payload.event));
+    this.dateDetails.events[this.dateDetails.events.findIndex(e => e.id === payload.event.id)] = JSON.parse(JSON.stringify(payload.event));
+    const dateIndex = this.monthDates.findIndex(d => d.id === payload.date.id);
+    this.monthDates[dateIndex].events[this.monthDates[dateIndex].events.findIndex(e => e.id === payload.event.id)] = JSON.parse(JSON.stringify(payload.event));
+    this.unsetEditEvent();
+  }
 
   daysInMonth(iMonth, iYear): number {
     return 32 - new Date(iYear, iMonth, 32).getDate();
@@ -78,7 +106,7 @@ export class BudgetComponent implements OnInit {
             id: idIndex,
             date: null,
             day: null,
-            events: null,
+            events: [],
             month: null,
             year: null
           });
@@ -123,8 +151,45 @@ export class BudgetComponent implements OnInit {
     $(this.dateModalEle.nativeElement).modal('show');
   }
 
+  createEvent(payload: { event: BudgetEvent, date: BudgetDate }) {
+    // Assign a unique id
+    let eventId = 1;
+    while (this.events.findIndex(e => e.id === eventId) !== -1) {
+      eventId++;
+    }
+
+    payload.event.id = eventId;
+    console.log(payload.event);
+    this.events.push(JSON.parse(JSON.stringify(payload.event)));
+
+    this.dateDetails.events.push(JSON.parse(JSON.stringify(payload.event)));
+    this.monthDates[this.monthDates.findIndex(d => d.id === payload.date.id)].events.push(JSON.parse(JSON.stringify(payload.event)));
+    this.newEventInProgress = false;
+    this.newEvent = {
+      amount: null,
+      dates: [],
+      description: null,
+      id: null,
+      name: null,
+      recurring: false,
+      type: null
+    };
+  }
+
   ngOnInit() {
     this.monthDates = this.generateCalendarDates(this.month, this.year);
+    const testEvent: BudgetEvent = {
+      amount: 1500,
+      dates: [],
+      description: null,
+      id: 1,
+      name: 'Paycheck',
+      recurring: false,
+      type: 'deposit'
+    };
+    this.events.push(testEvent)
+    this.monthDates[5].events.push(testEvent);
+    this.unsetEditEvent();
 
     $(this.dateModalEle.nativeElement).on('hidden.bs.modal', (e) => {
       this.newEventInProgress = false;

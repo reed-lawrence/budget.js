@@ -1,0 +1,48 @@
+<h6>{{type === 'new' ? 'New Event' : 'Edit Event'}}</h6>
+<label>Event Name</label>
+<input type="text" class="form-control mb-3" [(ngModel)]="event.name">
+<label class="mr-2">Description</label><span class="small text-muted">(Optional)</span>
+<textarea [(ngModel)]="event.description" class="form-control"></textarea>
+<div class="row my-3">
+  <div class="col">
+    <label class="mr-2">Recurring</label>
+    <input type="checkbox" #newEventRecurringCheckbox>
+  </div>
+  <div class="col">
+    <div @slideDown *ngIf="newEventRecurringCheckbox.checked === true">
+      <button class="btn btn-secondary dropdown-toggle" type="button" id="recurringDateDropdownButton"
+        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Dropdown button
+      </button>
+      <div class="dropdown-menu" aria-labelledby="recurringDateDropdownButton">
+        <a class="dropdown-item" href="#">Action</a>
+        <a class="dropdown-item" href="#">Another action</a>
+        <a class="dropdown-item" href="#">Something else here</a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="btn-group mb-3" role="group" aria-label="Basic example">
+  <button type="button" class="btn btn-outline-danger" [class.active]="event.type === 'payment'"
+    (click)="event.type = 'payment'">Payment</button>
+  <button type="button" class="btn btn-outline-success" [class.active]="event.type === 'deposit'"
+    (click)="event.type = 'deposit'">Deposit</button>
+</div>
+<div class="row mb-3">
+  <div class="col">
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text">
+          <i class="far fa-minus" *ngIf="event.type === 'payment'"></i>
+          <i class="far fa-plus" *ngIf="event.type === 'deposit'"></i>
+        </span>
+      </div>
+      <input type="number" class="form-control" [(ngModel)]="event.amount">
+    </div>
+  </div>
+  <div class="col-2 d-flex">
+    <span class="m-auto">{{event.type === 'payment' ? '-' : ''}}{{event.amount | currency}}</span>
+  </div>
+</div>
+<button class="btn btn-link" (click)="onCancel.emit()">Cancel</button>
+<button class="btn btn-primary float-right" (click)="onSave.emit({event: event, date: date})" *ngIf="type === 'new' || type === 'edit'">{{type === 'new' ? 'Create event' : 'Save changes'}}</button>

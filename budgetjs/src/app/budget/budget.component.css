@@ -12,5 +12,15 @@
 
 .calendar-date-valid:hover {
   cursor: pointer;
-  background-color: gray;
+  background-color: rgb(224, 224, 224);
+}
+
+.calendar-event{
+  font-size: smaller;
+  background-color: #d5e0ff;
+  border-radius: 5px;
+}
+
+.date-event:hover{
+  cursor: pointer;
 }
