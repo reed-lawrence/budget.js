@@ -8,6 +8,8 @@
 
 .calendar-col {
   transition: 250ms ease;
+  flex: 0 0 calc(100% / 7);
+  max-width: calc(100% / 7);
 }
 
 .calendar-date-valid:hover {
@@ -15,17 +17,17 @@
   background-color: rgb(224, 224, 224);
 }
 
-.calendar-event{
+.calendar-event {
   font-size: smaller;
   background-color: #d5e0ff;
   border-radius: 5px;
 }
 
-.date-event:hover{
+.date-event:hover {
   cursor: pointer;
 }
 
-.calendar-date-preview{
+.calendar-date-preview {
   position: fixed;
   z-index: 1000;
   background-color: white;

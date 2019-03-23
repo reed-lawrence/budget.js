@@ -115,42 +115,51 @@ export class BudgetComponent implements OnInit {
   generateCalendarDates(month: number, year: number): BudgetDate[] {
     const arr: BudgetDate[] = [];
     const firstDay = (new Date(year, month)).getDay();
-    let date = 1;
+    let date = new Date(year, month).getTime();
     let idIndex = 0;
     const daysInMonth = this.daysInMonth(month, year);
 
     for (let i = 0; i < 6; i++) {
       for (let j = 0; j < 7; j++) {
-        if (i === 0 && j < firstDay) {
-          arr.push({
-            id: idIndex,
-            date: null,
-            day: null,
-            events: [],
-            month: null,
-            year: null
-          });
-        } else if (date > daysInMonth) {
-          arr.push({
-            id: idIndex,
-            date: null,
-            day: null,
-            events: null,
-            month: null,
-            year: null
-          });
-        } else {
-          arr.push({
-            id: idIndex,
-            date: date,
-            day: this.getDayOfWeek(year, month, date),
-            events: [],
-            month: month,
-            year: year
-          });
-          date++;
-        }
-        idIndex++;
+        // if (i === 0 && j < firstDay) {
+        //   arr.push({
+        //     id: idIndex,
+        //     date: null,
+        //     day: null,
+        //     events: [],
+        //     month: null,
+        //     year: null
+        //   });
+        // } else if (date > daysInMonth) {
+        //   arr.push({
+        //     id: idIndex,
+        //     date: null,
+        //     day: null,
+        //     events: null,
+        //     month: null,
+        //     year: null
+        //   });
+        // } else {
+        //   arr.push({
+        //     id: idIndex,
+        //     date: new Date(year, month, date).getTime(),
+        //     day: this.getDayOfWeek(year, month, date),
+        //     events: [],
+        //     month: month,
+        //     year: year
+        //   });
+        //   date++;
+        // }
+        // idIndex++;
+        arr.push({
+          id: null,
+          date: date,
+          day: null,
+          events: [],
+          month: null,
+          year: null
+        })
+        date += 86400000;
       }
     }
     console.log(arr);

@@ -24,7 +24,8 @@
             </div>
             <div @slideDown *ngIf="editEvent.id === event.id">
               <hr>
-              <app-event-editor (onCancel)="unsetEditEvent()" (onSave)="saveEditEvent($event)" [type]="'edit'" [event]="editEvent" [date]="dateDetails"></app-event-editor>
+              <app-event-editor (onCancel)="unsetEditEvent()" (onSave)="saveEditEvent($event)" [type]="'edit'"
+                [event]="editEvent" [date]="dateDetails"></app-event-editor>
             </div>
           </li>
           <li class="list-group-item">
@@ -32,7 +33,8 @@
               <button class="btn btn-primary" (click)="newEventInProgress = true">Add new event</button>
             </div>
             <div @slideDown *ngIf="newEventInProgress === true">
-              <app-event-editor (onSave)="createEvent($event)" [type]="'new'" [event]="newEvent" [date]="dateDetails" (onCancel)="newEventInProgress = false"></app-event-editor>  
+              <app-event-editor (onSave)="createEvent($event)" [type]="'new'" [event]="newEvent" [date]="dateDetails"
+                (onCancel)="newEventInProgress = false"></app-event-editor>
             </div>
           </li>
         </ul>
@@ -52,7 +54,7 @@
   <div class="col-lg-3">
   </div>
   <div class="col">
-    <table class="table mt-5">
+    <!-- <table class="table mt-5">
       <tr>
         <th>Sunday</th>
         <th>Monday</th>
@@ -64,9 +66,10 @@
       </tr>
       <tr class="calendar-row">
         <td class="calendar-col" *ngFor="let date of weekFilter(monthDates, 7)"
-          [class.calendar-date-valid]="date.date !== null" (click)="viewDateDetails(date)" (mousemove)="updateCalendarTooltip(date, $event)">
+          [class.calendar-date-valid]="date.date !== null" (click)="viewDateDetails(date)"
+          (mousemove)="updateCalendarTooltip(date, $event)">
           <div class="calendar-date">
-            {{date.date}}
+            {{date.date | date: 'd'}}
           </div>
           <div class="row calendar-event no-gutters px-1 mb-1" *ngFor="let event of date.events">
             <div class="col-9">
@@ -82,7 +85,7 @@
         <td class="calendar-col" *ngFor="let date of weekFilter(monthDates, 14, 7)"
           [class.calendar-date-valid]="date.date !== null">
           <div class="calendar-date">
-            {{date.date}}
+            {{date.date | date: 'd'}}
           </div>
         </td>
       </tr>
@@ -90,7 +93,7 @@
         <td class="calendar-col" *ngFor="let date of weekFilter(monthDates, 21, 14)"
           [class.calendar-date-valid]="date.date !== null">
           <div class="calendar-date">
-            {{date.date}}
+            {{date.date | date: 'd'}}
           </div>
         </td>
       </tr>
@@ -98,7 +101,7 @@
         <td class="calendar-col" *ngFor="let date of weekFilter(monthDates, 28, 21)"
           [class.calendar-date-valid]="date.date !== null">
           <div class="calendar-date">
-            {{date.date}}
+            {{date.date | date: 'd'}}
           </div>
         </td>
       </tr>
@@ -106,7 +109,7 @@
         <td class="calendar-col" *ngFor="let date of weekFilter(monthDates, 35, 28)"
           [class.calendar-date-valid]="date.date !== null">
           <div class="calendar-date">
-            {{date.date}}
+            {{date.date | date: 'd'}}
           </div>
         </td>
       </tr>
@@ -114,11 +117,18 @@
         <td class="calendar-col" *ngFor="let date of weekFilter(monthDates, 42, 35)"
           [class.calendar-date-valid]="date.date !== null">
           <div class="calendar-date">
-            {{date.date}}
+            {{date.date | date: 'd'}}
           </div>
         </td>
       </tr>
 
-    </table>
+    </table> -->
+    <div class="row">
+      <div class="calendar-col" *ngFor="let date of monthDates">
+        <div class="calendar-date">
+          {{date.date | date: 'M/d'}}
+        </div>
+      </div>
+    </div>
   </div>
 </div>
