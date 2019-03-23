@@ -36,7 +36,27 @@ export class BudgetComponent implements OnInit {
   editEventInProgress = false;
   editEvent: BudgetEvent = null;
 
+  hoverDate: BudgetDate = null;
 
+  // Tooltip hover
+  @ViewChild('calendarDatePreview') calendarDatePreviewEle: ElementRef;
+
+  updateCalendarTooltip(date: BudgetDate, event: any) {
+    if(date.date !== null){
+      $(this.calendarDatePreviewEle.nativeElement).css('left', event.pageX).css('top', event.pageY + 50).css('opacity', 1);
+    } else {
+      $(this.calendarDatePreviewEle.nativeElement).css('opacity', 0);
+    }
+   
+    if(this.hoverDate === null) {
+      this.hoverDate = date;
+    }
+
+    if(this.hoverDate.id !== date.id){
+      this.hoverDate = date;
+    }
+    // console.log(event);
+  }
 
   unsetEditEvent() {
     this.editEvent = {

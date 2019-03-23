@@ -44,6 +44,10 @@
   </div>
 </div>
 
+<div class="calendar-date-preview p-3" #calendarDatePreview>
+  Test
+</div>
+
 <div class="row">
   <div class="col-lg-3">
   </div>
@@ -60,7 +64,7 @@
       </tr>
       <tr class="calendar-row">
         <td class="calendar-col" *ngFor="let date of weekFilter(monthDates, 7)"
-          [class.calendar-date-valid]="date.date !== null" (click)="viewDateDetails(date)">
+          [class.calendar-date-valid]="date.date !== null" (click)="viewDateDetails(date)" (mousemove)="updateCalendarTooltip(date, $event)">
           <div class="calendar-date">
             {{date.date}}
           </div>
