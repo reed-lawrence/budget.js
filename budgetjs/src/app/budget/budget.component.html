@@ -3,8 +3,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header" *ngIf="dateDetails !== null">
-        <h5 class="modal-title" id="dateModalLabel">{{dateDetails.day}}
-          {{(dateDetails.month + 1) + '/' + dateDetails.date + '/' + dateDetails.year | date}}</h5>
+        <h5 class="modal-title" id="dateModalLabel">{{dateDetails.date | date}}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -47,86 +46,27 @@
 </div>
 
 <div class="calendar-date-preview p-3" #calendarDatePreview>
-  Test
+  <span *ngIf="hoverDate !== null">{{hoverDate.total}}</span>
 </div>
 
 <div class="row">
   <div class="col-lg-3">
   </div>
   <div class="col">
-    <!-- <table class="table mt-5">
-      <tr>
-        <th>Sunday</th>
-        <th>Monday</th>
-        <th>Tuesday</th>
-        <th>Wednesday</th>
-        <th>Thursday</th>
-        <th>Friday</th>
-        <th>Saturday</th>
-      </tr>
-      <tr class="calendar-row">
-        <td class="calendar-col" *ngFor="let date of weekFilter(monthDates, 7)"
-          [class.calendar-date-valid]="date.date !== null" (click)="viewDateDetails(date)"
-          (mousemove)="updateCalendarTooltip(date, $event)">
-          <div class="calendar-date">
-            {{date.date | date: 'd'}}
-          </div>
-          <div class="row calendar-event no-gutters px-1 mb-1" *ngFor="let event of date.events">
-            <div class="col-9">
-              {{event.name}}
-            </div>
-            <div class="col">
-              {{event.type === 'payment' ? '-' : ''}}{{event.amount | currency}}
-            </div>
-          </div>
-        </td>
-      </tr>
-      <tr class="calendar-row">
-        <td class="calendar-col" *ngFor="let date of weekFilter(monthDates, 14, 7)"
-          [class.calendar-date-valid]="date.date !== null">
-          <div class="calendar-date">
-            {{date.date | date: 'd'}}
-          </div>
-        </td>
-      </tr>
-      <tr class="calendar-row">
-        <td class="calendar-col" *ngFor="let date of weekFilter(monthDates, 21, 14)"
-          [class.calendar-date-valid]="date.date !== null">
-          <div class="calendar-date">
-            {{date.date | date: 'd'}}
-          </div>
-        </td>
-      </tr>
-      <tr class="calendar-row">
-        <td class="calendar-col" *ngFor="let date of weekFilter(monthDates, 28, 21)"
-          [class.calendar-date-valid]="date.date !== null">
-          <div class="calendar-date">
-            {{date.date | date: 'd'}}
-          </div>
-        </td>
-      </tr>
-      <tr class="calendar-row">
-        <td class="calendar-col" *ngFor="let date of weekFilter(monthDates, 35, 28)"
-          [class.calendar-date-valid]="date.date !== null">
-          <div class="calendar-date">
-            {{date.date | date: 'd'}}
-          </div>
-        </td>
-      </tr>
-      <tr class="calendar-row">
-        <td class="calendar-col" *ngFor="let date of weekFilter(monthDates, 42, 35)"
-          [class.calendar-date-valid]="date.date !== null">
-          <div class="calendar-date">
-            {{date.date | date: 'd'}}
-          </div>
-        </td>
-      </tr>
-
-    </table> -->
-    <div class="row">
-      <div class="calendar-col" *ngFor="let date of monthDates">
+    <div class="row calendar-row">
+      <div class="calendar-col" *ngFor="let date of monthDates" (click)="viewDateDetails(date)"
+        [class.calendar-date-valid]="date.date >= monthFirstDate && date.date <= monthLastDate"
+        (mousemove)="updateCalendarTooltip(date, $event)">
         <div class="calendar-date">
           {{date.date | date: 'M/d'}}
+        </div>
+        <div class="row calendar-event no-gutters px-1 mb-1" *ngFor="let event of date.events">
+          <div class="col-9">
+            {{event.name}}
+          </div>
+          <div class="col">
+            {{event.type === 'payment' ? '-' : ''}}{{event.amount | currency}}
+          </div>
         </div>
       </div>
     </div>

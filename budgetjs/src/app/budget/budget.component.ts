@@ -26,6 +26,8 @@ export class BudgetComponent implements OnInit {
   year = 2019;
   monthDates: BudgetDate[] = [];
   events: BudgetEvent[] = [];
+  monthFirstDate: number = null;
+  monthLastDate: number = null;
 
   // Modal elements
   @ViewChild('dateModal') dateModalEle: ElementRef;
@@ -42,20 +44,38 @@ export class BudgetComponent implements OnInit {
   @ViewChild('calendarDatePreview') calendarDatePreviewEle: ElementRef;
 
   updateCalendarTooltip(date: BudgetDate, event: any) {
-    if(date.date !== null){
+    if (date.date >= this.monthFirstDate && date.date <= this.monthLastDate) {
       $(this.calendarDatePreviewEle.nativeElement).css('left', event.pageX).css('top', event.pageY + 50).css('opacity', 1);
     } else {
       $(this.calendarDatePreviewEle.nativeElement).css('opacity', 0);
     }
-   
-    if(this.hoverDate === null) {
+
+    if (this.hoverDate === null) {
       this.hoverDate = date;
     }
 
-    if(this.hoverDate.id !== date.id){
+    if (this.hoverDate.date !== date.date) {
       this.hoverDate = date;
     }
-    // console.log(event);
+    this.hoverDate.total = this.calculateDateTotal(date, this.events, 0);
+  }
+
+  calculateDateTotal(date: BudgetDate, events: BudgetEvent[], initialBalance: number): number {
+    let total = initialBalance;
+    for (const event of events) {
+      if (event.recurring === true) {
+        for (const d of event.dates) {
+          if (d.date <= date.date) {
+            total += event.amount;
+          }
+        }
+      } else {
+        if (event.dates[0].date <= date.date) {
+          total += event.amount;
+        }
+      }
+    }
+    return total;
   }
 
   unsetEditEvent() {
@@ -77,7 +97,7 @@ export class BudgetComponent implements OnInit {
   saveEditEvent(payload: { event: BudgetEvent, date: BudgetDate }) {
     this.events[this.events.findIndex(e => e.id === payload.event.id)] = JSON.parse(JSON.stringify(payload.event));
     this.dateDetails.events[this.dateDetails.events.findIndex(e => e.id === payload.event.id)] = JSON.parse(JSON.stringify(payload.event));
-    const dateIndex = this.monthDates.findIndex(d => d.id === payload.date.id);
+    const dateIndex = this.monthDates.findIndex(d => d.date === payload.date.date);
     this.monthDates[dateIndex].events[this.monthDates[dateIndex].events.findIndex(e => e.id === payload.event.id)] = JSON.parse(JSON.stringify(payload.event));
     this.unsetEditEvent();
   }
@@ -115,53 +135,33 @@ export class BudgetComponent implements OnInit {
   generateCalendarDates(month: number, year: number): BudgetDate[] {
     const arr: BudgetDate[] = [];
     const firstDay = (new Date(year, month)).getDay();
-    let date = new Date(year, month).getTime();
-    let idIndex = 0;
+    let dateIndex = 1;
+    let date = new Date(year, month, dateIndex).getTime();
+    this.monthFirstDate = date;
     const daysInMonth = this.daysInMonth(month, year);
+    this.monthLastDate = new Date(year, month, daysInMonth).getTime();
 
     for (let i = 0; i < 6; i++) {
       for (let j = 0; j < 7; j++) {
-        // if (i === 0 && j < firstDay) {
-        //   arr.push({
-        //     id: idIndex,
-        //     date: null,
-        //     day: null,
-        //     events: [],
-        //     month: null,
-        //     year: null
-        //   });
-        // } else if (date > daysInMonth) {
-        //   arr.push({
-        //     id: idIndex,
-        //     date: null,
-        //     day: null,
-        //     events: null,
-        //     month: null,
-        //     year: null
-        //   });
-        // } else {
-        //   arr.push({
-        //     id: idIndex,
-        //     date: new Date(year, month, date).getTime(),
-        //     day: this.getDayOfWeek(year, month, date),
-        //     events: [],
-        //     month: month,
-        //     year: year
-        //   });
-        //   date++;
-        // }
-        // idIndex++;
-        arr.push({
-          id: null,
-          date: date,
-          day: null,
-          events: [],
-          month: null,
-          year: null
-        })
-        date += 86400000;
+        if (i === 0 && j < firstDay) {
+          arr.push({
+            date: date - Math.abs(((j - firstDay) * 86400000)),
+            events: [],
+            total: null
+          });
+        } else {
+          arr.push({
+            date: date,
+            events: [],
+            total: null
+          });
+          dateIndex++;
+          date = new Date(year, month, dateIndex).getTime();
+        }
       }
     }
+    console.log('First day: ' + this.monthFirstDate);
+    console.log('Last day: ' + this.monthLastDate);
     console.log(arr);
     return arr;
   }
@@ -209,14 +209,22 @@ export class BudgetComponent implements OnInit {
     this.monthDates = this.generateCalendarDates(this.month, this.year);
     const testEvent: BudgetEvent = {
       amount: 1500,
-      dates: [],
+      dates: [{
+        date: 1551420000000,
+        day: null,
+        events: null,
+        id: null,
+        month: null,
+        total: null,
+        year: null
+      }],
       description: null,
       id: 1,
       name: 'Paycheck',
       recurring: false,
       type: 'deposit'
     };
-    this.events.push(testEvent)
+    this.events.push(testEvent);
     this.monthDates[5].events.push(testEvent);
     this.unsetEditEvent();
 
